@@ -1,0 +1,9 @@
+{
+    "id" : "Maze",
+    "version" : "0.1.0-SNAPSHOT",
+    "author" : "",
+    "displayName" : "Maze",
+    "description" : "",
+    "dependencies" : [],
+    "serverSideOnly" : false
+}
