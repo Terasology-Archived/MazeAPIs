@@ -1,8 +1,8 @@
 {
-    "id" : "Maze",
-    "version" : "0.1.0-SNAPSHOT",
+    "id" : "MazeAPIs",
+    "version" : "0.1.0",
     "author" : "",
-    "displayName" : "Maze",
+    "displayName" : "MazeAPIs",
     "description" : "",
     "dependencies" : [],
     "serverSideOnly" : false

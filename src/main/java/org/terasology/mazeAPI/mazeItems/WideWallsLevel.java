@@ -1,7 +1,7 @@
 package org.terasology.mazeAPI.mazeItems;
 
 import org.terasology.math.geom.Vector2i;
-import org.terasology.mazeAPI.Util;
+import org.terasology.mazeAPI.config.MazeConfig;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Level where all walls are wide same as corridors.
@@ -32,7 +33,7 @@ public class WideWallsLevel implements Level {
     }
 
     @Override
-    public void fillEmptySpaceWithMazes() {
+    public void fillEmptySpaceWithMazes(MazeConfig config) {
         for (int x = 1; x < WIDTH; x += 2) {
             for (int y = 1; y < HEIGHT; y += 2) {
                 if (!getTile(x, y).isPassable) {
@@ -45,15 +46,15 @@ public class WideWallsLevel implements Level {
                         expandableTiles.add(currentTile);
                     }
                     while (!expandableTiles.isEmpty()) {
-                        expandTile(expandableTiles, region);
+                        expandTile(expandableTiles, region, config);
                     }
                 }
             }
         }
     }
 
-    private void expandTile(ArrayList<Vector2i> expandableTiles, MazeRegion region) {
-        int tileIndex = Util.randomInt() % expandableTiles.size();
+    private void expandTile(ArrayList<Vector2i> expandableTiles, MazeRegion region, MazeConfig config) {
+        int tileIndex = config.util.randomInt() % expandableTiles.size();
         int freeTiles = getImpassableTilesAround(expandableTiles.get(tileIndex));
         if (freeTiles == 0) {
             expandableTiles.remove(tileIndex);
@@ -177,15 +178,15 @@ public class WideWallsLevel implements Level {
     }
 
     @Override
-    public void doorify() {
+    public void doorify(MazeConfig config) {
         ArrayList<Vector2i> markedPositions;
         while (true) {
             markedPositions = new ArrayList<>();
-            markPossibleDoorPositions(markedPositions);
+            markPossibleDoorPositions(markedPositions, config);
             if (markedPositions.isEmpty()) {
                 return;
             }
-            Vector2i chosenPosition = markedPositions.get(Util.randomInt() % markedPositions.size());
+            Vector2i chosenPosition = markedPositions.get(config.util.randomInt() % markedPositions.size());
             openDoor(chosenPosition.x, chosenPosition.y);
             if (chosenPosition.x % 2 == 0 && chosenPosition.y % 2 == 1) {
                 getTile(chosenPosition.x - 1, chosenPosition.y).region.isConnectedToMain = true;
@@ -197,7 +198,7 @@ public class WideWallsLevel implements Level {
         }
     }
 
-    private void markPossibleDoorPositions(ArrayList<Vector2i> markedPositions) {
+    private void markPossibleDoorPositions(ArrayList<Vector2i> markedPositions, MazeConfig config) {
         for (int x = 1; x < WIDTH - 1; x++) {
             for (int y = 1; y < HEIGHT - 1; y++) {
                 if (!getTile(x, y).isPassable) {
@@ -206,7 +207,7 @@ public class WideWallsLevel implements Level {
                             getTile(x, y).tileType = TileType.POTENTIAL_DOOR;
                             markedPositions.add(new Vector2i(x, y));
                         } else if (getTile(x, y).tileType == TileType.POTENTIAL_DOOR) {
-                            randomlyOpenDoor(x, y);
+                            randomlyOpenDoor(x, y, config);
                         }
                     }
                     if (x % 2 == 1 && y % 2 == 0 && getTile(x, y - 1).region != getTile(x, y + 1).region) {
@@ -214,7 +215,7 @@ public class WideWallsLevel implements Level {
                             getTile(x, y).tileType = TileType.POTENTIAL_DOOR;
                             markedPositions.add(new Vector2i(x, y));
                         } else if (getTile(x, y).tileType == TileType.POTENTIAL_DOOR) {
-                            randomlyOpenDoor(x, y);
+                            randomlyOpenDoor(x, y, config);
                         }
                     }
                 }
@@ -255,8 +256,8 @@ public class WideWallsLevel implements Level {
         }
     }
 
-    private void randomlyOpenDoor(int x, int y) {
-        if (Util.randomInt() % 50 == 0) {
+    private void randomlyOpenDoor(int x, int y, MazeConfig config) {
+        if (config.util.randomInt() % 50 == 0) {
             openDoor(x, y);
         } else {
             getTile(x, y).tileType = TileType.WALL;
@@ -284,5 +285,30 @@ public class WideWallsLevel implements Level {
     @Override
     public Tile getTile(int x, int y) {
         return tiles[x][y];
+    }
+
+    @Override
+    public Iterator<Tile> iterator() {
+        return new Iterator<Tile>() {
+            private int index = 0;
+            @Override
+            public boolean hasNext() {
+                return index < WIDTH * HEIGHT;
+            }
+
+            @Override
+            public Tile next() {
+                return tiles[index / WIDTH][index++ % WIDTH];
+            }
+        };
+    }
+
+    public void computeTileData() {
+        for (Tile tile : this) {
+            tile.isOpenUp = tile.position.y != 0 && getTile(tile.position.x, tile.position.y - 1).isPassable;
+            tile.isOpenDown = tile.position.y != HEIGHT - 1 && getTile(tile.position.x, tile.position.y + 1).isPassable;
+            tile.isOpenLeft = tile.position.x != 0 && getTile(tile.position.x - 1, tile.position.y).isPassable;
+            tile.isOpenRight = tile.position.x != WIDTH - 1 && getTile(tile.position.x + 1, tile.position.y).isPassable;
+        }
     }
 }

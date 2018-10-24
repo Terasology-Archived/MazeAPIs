@@ -1,16 +1,18 @@
 package org.terasology.mazeAPI.mazeItems;
 
+import org.terasology.mazeAPI.config.MazeConfig;
+
 import java.io.IOException;
 
-public interface Level {
+public interface Level extends Iterable<Tile> {
     Tile getTile(int x, int y);
     void render(String filename) throws IOException;
 
-    void doorify();
+    void doorify(MazeConfig config);
 
     void removeDeadEnds();
 
-    void fillEmptySpaceWithMazes();
+    void fillEmptySpaceWithMazes(MazeConfig config);
 
     /**
      * Attempts to place a room of given dimensions on position, reports success.
