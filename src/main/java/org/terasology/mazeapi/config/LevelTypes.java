@@ -1,4 +1,4 @@
-package org.terasology.mazeAPI.config;
+package org.terasology.mazeapi.config;
 
 public enum LevelTypes {
     WIDE_WALLS,

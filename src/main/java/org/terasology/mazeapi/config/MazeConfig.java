@@ -1,6 +1,6 @@
-package org.terasology.mazeAPI.config;
+package org.terasology.mazeapi.config;
 
-import org.terasology.mazeAPI.Util;
+import org.terasology.mazeapi.Util;
 
 public class MazeConfig {
     public int width = 301;

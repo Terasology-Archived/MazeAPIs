@@ -1,9 +1,9 @@
-package org.terasology.mazeAPI;
+package org.terasology.mazeapi;
 
-import org.terasology.mazeAPI.config.MazeConfig;
-import org.terasology.mazeAPI.mazeItems.Level;
-import org.terasology.mazeAPI.mazeItems.MazeRegion;
-import org.terasology.mazeAPI.mazeItems.WideWallsLevel;
+import org.terasology.mazeapi.config.MazeConfig;
+import org.terasology.mazeapi.mazeItems.Level;
+import org.terasology.mazeapi.mazeItems.MazeRegion;
+import org.terasology.mazeapi.mazeItems.WideWallsLevel;
 
 public class Maze {
 

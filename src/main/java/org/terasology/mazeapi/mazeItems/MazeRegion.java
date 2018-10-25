@@ -1,4 +1,4 @@
-package org.terasology.mazeAPI.mazeItems;
+package org.terasology.mazeapi.mazeItems;
 
 public class MazeRegion {
     /**

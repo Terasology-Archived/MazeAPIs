@@ -1,7 +1,7 @@
-package org.terasology.mazeAPI.mazeItems;
+package org.terasology.mazeapi.mazeItems;
 
 import org.terasology.math.geom.Vector2i;
-import org.terasology.mazeAPI.config.MazeConfig;
+import org.terasology.mazeapi.config.MazeConfig;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

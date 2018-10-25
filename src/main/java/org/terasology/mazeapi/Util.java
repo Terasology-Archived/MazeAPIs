@@ -1,4 +1,4 @@
-package org.terasology.mazeAPI;
+package org.terasology.mazeapi;
 
 import java.util.Random;
 
