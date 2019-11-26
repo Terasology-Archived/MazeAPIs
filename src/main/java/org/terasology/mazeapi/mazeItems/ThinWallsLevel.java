@@ -216,7 +216,7 @@ public class ThinWallsLevel implements Level {
               if (tile.isOpenUp && y != 0) {
                 getTile(x, y-1).isOpenDown = false;
               }
-              if (tile.isOpenDown && x != HEIGHT - 1) {
+              if (tile.isOpenDown && y != HEIGHT - 1) {
                 getTile(x, y+1).isOpenUp = false;
               }
               markWall(tile);
