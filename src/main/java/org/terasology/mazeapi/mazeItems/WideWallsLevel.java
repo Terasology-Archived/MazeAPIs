@@ -4,7 +4,7 @@ import org.terasology.math.geom.Vector2i;
 import org.terasology.mazeapi.config.MazeConfig;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -178,7 +178,7 @@ public class WideWallsLevel implements Level {
     }
 
     @Override
-    public void doorify(MazeConfig config) {
+    public void interConnect(MazeConfig config) {
         ArrayList<Vector2i> markedPositions;
         while (true) {
             markedPositions = new ArrayList<>();
@@ -272,7 +272,7 @@ public class WideWallsLevel implements Level {
 
     private void checkRoomDimensions(int x, int y, int width, int height) {
         if (width % 2 == 0 || height % 2 == 0 || width < 3 || height < 3 || x + width > WIDTH || y + height > HEIGHT) {
-            throw new IllegalArgumentException("Room dimensions in WIdeWallsLevel must be even and greater than 3.");
+            throw new IllegalArgumentException("Room dimensions in WideWallsLevel must be even and greater than 3.");
         }
     }
 
